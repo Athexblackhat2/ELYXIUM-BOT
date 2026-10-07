@@ -1,0 +1,35 @@
+{
+  "name": "elyxium-bot-v1",
+  "version": "1.0.0",
+  "description": "ELYXIUM BOT v1.0 - WhatsApp Bot powered by ATHEX & ALTHEA",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "whatsapp-bot",
+    "elyxium",
+    "athex",
+    "althea",
+    "baileys"
+  ],
+  "author": "ELYXIUM Team",
+  "license": "MIT",
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.6.0",
+    "@hapi/boom": "^10.0.1",
+    "pino": "^8.16.0",
+    "qrcode-terminal": "^0.12.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.0",
+    "chalk": "^4.1.2",
+    "moment": "^2.29.4",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2",
+    "qrcode": "^1.5.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}
