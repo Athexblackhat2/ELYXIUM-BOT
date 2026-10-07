@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELYXIUM BOT — Premium WhatsApp Automation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #7a5c5c;
+            --bg2: #000000;
+            --card: #000000;
+            --border: #22223a;
+            --accent: #a855f7;
+            --accent2: #6366f1;
+            --gold: #f59e0b;
+            --text: #e2e8f0;
+            --text2: #94a3b8;
+            --green: #22c55e;
+            --red: #ef4444;
+            --gradient: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+            --glow: 0 0 30px rgba(168, 85, 247, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === Animated Background === */
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+        .orb:nth-child(1) { width: 400px; height: 400px; background: var(--accent); top: -100px; left: -100px; animation-delay: 0s; }
+        .orb:nth-child(2) { width: 300px; height: 300px; background: var(--accent2); bottom: -100px; right: -100px; animation-delay: -7s; }
+        .orb:nth-child(3) { width: 200px; height: 200px; background: var(--gold); top: 50%; left: 50%; animation-delay: -14s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(100px, -50px) scale(1.2); }
+            50% { transform: translate(-50px, 100px) scale(0.8); }
+            75% { transform: translate(-100px, -100px) scale(1.1); }
+        }
+
+        /* === Header === */
+        .header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-icon {
+            width: 45px; height: 45px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--glow);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(195, 14, 0.8, 0.8); }
+            50% { box-shadow: 0 0 40px rgba(195, 14, 14, 0.8); }
+        }
+        .logo-text h1 {
+            font-size: 1.4rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        .logo-text span { font-size: 0.7rem; color: var(--text2); letter-spacing: 1px; text-transform: uppercase; }
+
+        .nav-links { display: flex; gap: 15px; align-items: center; }
+        .nav-link {
+            color: var(--text2); text-decoration: none;
+            padding: 8px 16px; border-radius: 8px;
+            transition: all 0.3s; font-size: 0.9rem;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--text); background: var(--card); }
+        .nav-link i { margin-right: 6px; }
+
+        .stats-badges { display: flex; gap: 15px; }
+        .badge {
+            background: var(--card); border: 1px solid var(--border);
+            padding: 8px 16px; border-radius: 25px;
+            font-size: 0.85rem; display: flex; align-items: center; gap: 8px;
+        }
+        .badge i { font-size: 0.7rem; }
+        .badge .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot.green { background: var(--green); box-shadow: 0 0 10px var(--green); }
+        .dot.purple { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
+        /* === Main Container === */
+        .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; position: relative; z-index: 1; }
+
+        /* === Hero === */
+        .hero {
+            text-align: center; padding: 50px 20px;
+            background: var(--card); border-radius: 20px;
+            border: 1px solid var(--border); margin-bottom: 30px;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(194, 36, 22, 0.05) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+        .hero > * { position: relative; z-index: 1; }
+        .hero h2 { font-size: 2.5rem; margin-bottom: 10px; }
+        .hero h2 span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: var(--text2); margin-bottom: 25px; font-size: 1.1rem; }
+
+        .input-group {
+            display: flex; gap: 12px; max-width: 500px; margin: 0 auto;
+        }
+        .input-group input {
+            flex: 1; padding: 15px 20px; border-radius: 30px;
+            border: 2px solid var(--border); background: var(--bg2);
+            color: var(--text); font-size: 1rem; transition: all 0.3s;
+        }
+        .input-group input:focus { outline: none; border-color: var(--accent); box-shadow: var(--glow); }
+
+        .btn {
+            padding: 15px 30px; border-radius: 30px; border: none;
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+            transition: all 0.3s; display: flex; align-items: center; gap: 8px;
+        }
+        .btn-primary { background: var(--gradient); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--glow); }
+        .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); }
+        .btn-outline:hover { background: rgba(168,85,247,0.1); }
+        .btn-danger { background: var(--red); color: white; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* === Pairing Section === */
+        .pairing-section { display: none; margin-top: 20px; }
+        .pairing-code-box {
+            background: var(--bg2); border: 2px solid var(--accent);
+            border-radius: 15px; padding: 25px; display: inline-block;
+            box-shadow: var(--glow); animation: fadeInUp 0.5s;
+        }
+        .pairing-code {
+            font-size: 2.5rem; font-weight: 800; letter-spacing: 8px;
+            background: var(--gradient); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; font-family: 'Courier New', monospace;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .spinner {
+            width: 40px; height: 40px; border: 3px solid var(--border);
+            border-top-color: var(--accent); border-radius: 50%;
+            animation: spin 0.8s linear infinite; margin: 20px auto;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* === Sessions Grid === */
+        .section-title { font-size: 1.3rem; margin: 30px 0 15px; display: flex; align-items: center; gap: 10px; }
+        .section-title i { color: var(--accent); }
+        .sessions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+        .session-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 15px; padding: 20px; transition: all 0.3s;
+            animation: fadeInUp 0.4s;
+        }
+        .session-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .session-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .session-status { display: flex; align-items: center; gap: 8px; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .status-dot.online { background: var(--green); box-shadow: 0 0 10px var(--green); animation: pulse 2s infinite; }
+        .status-dot.offline { background: var(--red); }
+        .session-actions { display: flex; gap: 8px; margin-top: 12px; }
+        .session-actions .btn { padding: 8px 15px; font-size: 0.8rem; }
+
+        /* === Console === */
+        .console-section { margin-top: 30px; }
+        .console-header {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 12px 12px 0 0; padding: 12px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .console-output {
+            background: #000; border: 1px solid var(--border); border-top: none;
+            border-radius: 0 0 12px 12px; padding: 15px; height: 250px;
+            overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.85rem;
+        }
+        .log-entry { padding: 4px 8px; margin-bottom: 2px; border-left: 3px solid var(--accent); padding-left: 10px; }
+        .log-entry.error { border-color: var(--red); color: #fca5a5; }
+        .log-entry.success { border-color: var(--green); color: #86efac; }
+        .log-entry.warning { border-color: var(--gold); color: #fcd34d; }
+
+        /* === Toast === */
+        .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 999; }
+        .toast {
+            background: var(--card); border: 1px solid var(--accent);
+            padding: 12px 20px; border-radius: 10px; margin-top: 8px;
+            animation: slideIn 0.3s; font-size: 0.9rem;
+        }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* === Responsive === */
+        @media (max-width: 768px) {
+            .header { flex-direction: column; gap: 10px; }
+            .stats-badges { flex-wrap: wrap; justify-content: center; }
+            .hero h2 { font-size: 1.8rem; }
+            .input-group { flex-direction: column; }
+            .sessions-grid { grid-template-columns: 1fr; }
+        }
+
+        /* === Scrollbar === */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">⚡</div>
+            <div class="logo-text">
+                <h1>ELYXIUM BOT V1</h1>
+                <span>Powered by ATHEX x ALTHEA</span>
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="/public/index.html" class="nav-link active"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="/public/about.html" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+        </nav>
+        <div class="stats-badges">
+            <div class="badge">
+                <span class="dot green"></span>
+                <span>Active: <strong id="activeCount">0</strong></span>
+            </div>
+            <div class="badge">
+                <span class="dot purple"></span>
+                <span>Total: <strong id="totalCount">0</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Hero Section -->
+        <div class="hero">
+            <h2>Connect Your <span>WhatsApp</span></h2>
+            <p>Enter your WhatsApp number to pair with ELYXIUM BOT</p>
+            <div class="input-group">
+                <input type="tel" id="phoneInput" placeholder="Enter number (e.g. 923000000000)" pattern="[0-9]+">
+                <button id="connectBtn" class="btn btn-primary">
+                    <i class="fas fa-link"></i> Connect
+                </button>
+            </div>
+
+            <!-- Pairing Result -->
+            <div class="pairing-section" id="pairingSection">
+                <div class="spinner" id="loadingSpinner" style="display:none;"></div>
+                <div id="pairingCodeBox" style="display:none;" class="pairing-code-box">
+                    <p style="color:var(--text2); margin-bottom:10px;">🔑 Your Pairing Code</p>
+                    <div class="pairing-code" id="codeDisplay"></div>
+                    <p style="color:var(--text2); margin-top:15px; font-size:0.85rem;">
+                        Open WhatsApp → Linked Devices → Enter Code
+                    </p>
+                </div>
+                <div id="qrBox" style="display:none;">
+                    <p style="color:var(--text2); margin-bottom:10px;">📱 Scan QR Code</p>
+                    <canvas id="qrCanvas" style="background:rgb(156, 140, 140); padding:15px; border-radius:10px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sessions -->
+        <div class="section-title"><i class="fas fa-robot"></i> Connected Sessions</div>
+        <div class="sessions-grid" id="sessionsGrid">
+            <p style="color:var(--text2); grid-column:1/-1; text-align:center; padding:40px;">
+                No active sessions. Connect a WhatsApp number above.
+            </p>
+        </div>
+
+        <!-- Console -->
+        <div class="console-section">
+            <div class="console-header">
+                <span><i class="fas fa-terminal"></i> <strong>Live Console</strong></span>
+                <button class="btn btn-outline" style="padding:6px 12px; font-size:0.75rem;" onclick="clearConsole()">
+                    <i class="fas fa-broom"></i> Clear
+                </button>
+            </div>
+            <div class="console-output" id="consoleOutput">
+                <div class="log-entry success"> ELYXIUM BOT Dashboard Ready</div>
+                <div class="log-entry"> Waiting for connections...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script>
+        const socket = io({ transports: ['websocket', 'polling'] });
+        const sessions = new Map();
+        let currentUser = null;
+
+        // DOM Elements
+        const phoneInput = document.getElementById('phoneInput');
+        const connectBtn = document.getElementById('connectBtn');
+        const pairingSection = document.getElementById('pairingSection');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const pairingCodeBox = document.getElementById('pairingCodeBox');
+        const codeDisplay = document.getElementById('codeDisplay');
+        const qrBox = document.getElementById('qrBox');
+        const qrCanvas = document.getElementById('qrCanvas');
+        const sessionsGrid = document.getElementById('sessionsGrid');
+        const consoleOutput = document.getElementById('consoleOutput');
+        const toastContainer = document.getElementById('toastContainer');
+        const activeCount = document.getElementById('activeCount');
+        const totalCount = document.getElementById('totalCount');
+
+        // Connect button
+        connectBtn.addEventListener('click', () => {
+            const number = phoneInput.value.trim();
+            if (!number || !/^\d{10,15}$/.test(number)) return toast('Please enter a valid number', 'error');
+
+            currentUser = number;
+            socket.emit('set-user', currentUser);
+            connectBtn.disabled = true;
+            pairingSection.style.display = 'block';
+            loadingSpinner.style.display = 'block';
+            pairingCodeBox.style.display = 'none';
+            qrBox.style.display = 'none';
+            socket.emit('pair-request', { userId: currentUser, number });
+            addLog(`Requesting pairing for +${number}...`, 'info');
+        });
+
+        phoneInput.addEventListener('keypress', e => { if (e.key === 'Enter') connectBtn.click(); });
+
+        // Socket events
+        socket.on('connect', () => addLog('Connected to server', 'success'));
+        socket.on('disconnect', () => addLog('Disconnected from server', 'error'));
+
+        socket.on('pairing-code', code => {
+            loadingSpinner.style.display = 'none';
+            pairingCodeBox.style.display = 'block';
+            codeDisplay.textContent = code;
+            connectBtn.disabled = false;
+            toast('Pairing code generated!', 'success');
+        });
+
+        socket.on('qr', qrData => {
+            loadingSpinner.style.display = 'none';
+            qrBox.style.display = 'block';
+            QRCode.toCanvas(qrCanvas, qrData, { width: 250 });
+            connectBtn.disabled = false;
+            addLog('QR Code ready — scan with WhatsApp', 'info');
+        });
+
+        socket.on('pairing-error', msg => {
+            loadingSpinner.style.display = 'none';
+            connectBtn.disabled = false;
+            toast('Pairing failed: ' + msg, 'error');
+            addLog('Pairing error: ' + msg, 'error');
+        });
+
+        socket.on('connection-status', data => {
+            if (data.connected) {
+                toast('WhatsApp connected! 🎉', 'success');
+                pairingSection.style.display = 'none';
+                connectBtn.disabled = false;
+            }
+            updateSession(data.user, data.connected, data);
+            updateCounts();
+        });
+
+        socket.on('total-active', count => { activeCount.textContent = count; });
+
+        socket.on('console', log => addLog(`[${log.timestamp}] ${log.message}`, log.type));
+
+        socket.on('sessions-list', list => {
+            sessionsGrid.innerHTML = '';
+            list.forEach(s => updateSession(s.userId, s.connected, s));
+            updateCounts();
+        });
+
+        function updateSession(userId, connected, data = {}) {
+            sessions.set(userId, { userId, connected, ...data });
+            renderSessions();
+        }
+
+        function renderSessions() {
+            sessionsGrid.innerHTML = '';
+            if (sessions.size === 0) {
+                sessionsGrid.innerHTML = '<p style="color:var(--text2); grid-column:1/-1; text-align:center; padding:40px;">No active sessions</p>';
+                return;
+            }
+            sessions.forEach(s => {
+                const card = document.createElement('div');
+                card.className = 'session-card';
+                card.innerHTML = `
+                    <div class="session-header">
+                        <div class="session-status">
+                            <span class="status-dot ${s.connected ? 'online' : 'offline'}"></span>
+                            <strong>+${s.userId}</strong>
+                        </div>
+                        <span style="color:${s.connected ? 'var(--green)' : 'var(--red)'}; font-size:0.85rem;">
+                            ${s.connected ? 'Online' : 'Offline'}
+                        </span>
+                    </div>
+                    <div style="font-size:0.85rem; color:var(--text2);">
+                        AI: ${s.aiEnabled ? '✅' : '❌'} | Public: ${s.isPublic ? '✅' : '❌'} | React: ${s.autoReact ? '✅' : '❌'}
+                    </div>
+                    <div class="session-actions">
+                        <button class="btn btn-outline" onclick="logout('${s.userId}')"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                    </div>`;
+                sessionsGrid.appendChild(card);
+            });
+            updateCounts();
+        }
+
+        function updateCounts() {
+            totalCount.textContent = sessions.size;
+            activeCount.textContent = Array.from(sessions.values()).filter(s => s.connected).length;
+        }
+
+        function logout(userId) {
+            if (!confirm('Logout session for +' + userId + '?')) return;
+            socket.emit('logout', userId);
+            sessions.delete(userId);
+            renderSessions();
+            toast('Session logged out', 'success');
+        }
+
+        function addLog(msg, type = 'info') {
+            const el = document.createElement('div');
+            el.className = `log-entry ${type}`;
+            el.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            consoleOutput.appendChild(el);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        function clearConsole() { consoleOutput.innerHTML = ''; addLog('Console cleared', 'info'); }
+
+        function toast(msg, type = 'info') {
+            const el = document.createElement('div');
+            el.className = 'toast';
+            el.style.borderColor = type === 'error' ? 'var(--red)' : type === 'success' ? 'var(--green)' : 'var(--accent)';
+            el.textContent = msg;
+            toastContainer.appendChild(el);
+            setTimeout(() => el.remove(), 3500);
+        }
+
+        // Request session list on load
+        socket.emit('get-sessions');
+    </script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — ELYXIUM BOT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #ffffff; --bg2: #4848ed; --card: #000000;
+            --border: #22223a; --accent: #a855f7; --accent2: #6366f1;
+            --gold: #f59e0b; --text: #e2e8f0; --text2: #94a3b8;
+            --green: #22c55e; --red: #dcd1d1;
+            --gradient: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+            --glow: 0 0 30px rgba(168, 85, 247, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg); color: var(--text);
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.25;
+            animation: float 20s infinite ease-in-out;
+        }
+        .orb:nth-child(1) { width: 350px; height: 350px; background: var(--accent); top: -80px; right: -80px; animation-delay: 0s; }
+        .orb:nth-child(2) { width: 250px; height: 250px; background: var(--accent2); bottom: -80px; left: -80px; animation-delay: -10s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-60px, 60px) scale(1.15); }
+        }
+
+        /* Header */
+        .header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); padding: 15px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-icon {
+            width: 45px; height: 45px; background: var(--gradient);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; box-shadow: var(--glow); animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(190, 42, 34, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(190, 29, 29, 0.8); }
+        }
+        .logo-text h1 { font-size: 1.4rem; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+        .logo-text span { font-size: 0.7rem; color: var(--text2); letter-spacing: 1px; text-transform: uppercase; }
+
+        .nav-links { display: flex; gap: 15px; align-items: center; }
+        .nav-link { color: var(--text2); text-decoration: none; padding: 8px 16px; border-radius: 8px; transition: all 0.3s; font-size: 0.9rem; }
+        .nav-link:hover, .nav-link.active { color: var(--text); background: var(--card); }
+        .nav-link i { margin-right: 6px; }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; position: relative; z-index: 1; }
+
+        /* Hero */
+        .hero {
+            text-align: center; padding: 60px 20px;
+            background: var(--card); border-radius: 20px;
+            border: 1px solid var(--border); margin-bottom: 30px;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(168,85,247,0.06) 0%, transparent 70%);
+            animation: rotate 25s linear infinite;
+        }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+        .hero > * { position: relative; z-index: 1; }
+        .hero-icon {
+            font-size: 4rem; margin-bottom: 15px;
+            animation: floatIcon 3s ease-in-out infinite;
+        }
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .hero h2 { font-size: 2.5rem; margin-bottom: 10px; }
+        .hero h2 span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero .tagline { color: var(--text2); font-size: 1.1rem; margin-bottom: 15px; }
+        .hero .version {
+            display: inline-block; background: var(--gradient);
+            padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; color: white;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 25px; margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .card:hover { border-color: var(--accent); }
+        .card h3 { font-size: 1.2rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .card h3 i { color: var(--accent); }
+
+        /* Dev Card */
+        .dev-card {
+            display: flex; gap: 25px; align-items: center; flex-wrap: wrap;
+        }
+        .dev-avatar {
+            width: 100px; height: 100px; border-radius: 50%;
+            background: var(--gradient); display: flex; align-items: center; justify-content: center;
+            font-size: 3rem; box-shadow: var(--glow); flex-shrink: 0;
+        }
+        .dev-info h3 { font-size: 1.5rem; }
+        .dev-info .role { color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+        .dev-info p { color: var(--text2); line-height: 1.6; margin-bottom: 5px; }
+        .dev-info .social-links { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+        .social-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 16px; border-radius: 25px; text-decoration: none;
+            font-size: 0.85rem; font-weight: 500; transition: all 0.3s;
+            border: 1px solid var(--border); color: var(--text);
+        }
+        .social-link:hover { border-color: var(--accent); background: rgba(168,85,247,0.1); }
+        .social-link.whatsapp { border-color: #25D366; color: #25D366; }
+        .social-link.whatsapp:hover { background: rgba(37,211,102,0.1); }
+        .social-link.telegram { border-color: #0088cc; color: #0088cc; }
+        .social-link.telegram:hover { background: rgba(0,136,204,0.1); }
+
+        /* Tier Cards */
+        .tier-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .tier-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 25px; text-align: center;
+            transition: all 0.3s; position: relative;
+        }
+        .tier-card:hover { transform: translateY(-5px); }
+        .tier-card.premium { border-color: var(--gold); }
+        .tier-card.premium::before {
+            content: 'POPULAR'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--gold); color: #000; padding: 4px 15px; border-radius: 15px;
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;
+        }
+        .tier-icon { font-size: 3rem; margin-bottom: 10px; }
+        .tier-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 5px; }
+        .tier-price { font-size: 2rem; font-weight: 800; color: var(--accent); margin: 10px 0; }
+        .tier-price span { font-size: 0.9rem; color: var(--text2); }
+        .tier-features { list-style: none; text-align: left; margin: 15px 0; }
+        .tier-features li { padding: 6px 0; color: var(--text2); font-size: 0.9rem; }
+        .tier-features li i { color: var(--green); margin-right: 8px; }
+        .tier-features li i.fa-times { color: var(--red); }
+
+        /* Tech Stack */
+        .tech-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tech-badge {
+            background: var(--bg2); border: 1px solid var(--border);
+            padding: 8px 16px; border-radius: 25px;
+            font-size: 0.85rem; display: flex; align-items: center; gap: 6px;
+        }
+        .tech-badge i { color: var(--accent); }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .stat-item {
+            text-align: center; padding: 20px;
+            background: var(--bg2); border-radius: 12px; border: 1px solid var(--border);
+        }
+        .stat-value { font-size: 2rem; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-label { font-size: 0.8rem; color: var(--text2); margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Footer */
+        .footer {
+            text-align: center; padding: 30px; color: var(--text2);
+            font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 40px;
+        }
+        .footer span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; gap: 10px; }
+            .hero h2 { font-size: 1.8rem; }
+            .dev-card { flex-direction: column; text-align: center; }
+            .social-links { justify-content: center; }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation">
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">⚡</div>
+            <div class="logo-text">
+                <h1>ELYXIUM BOT V1</h1>
+                <span>Powered by ATHEX x ALTHEA</span>
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="/public/index.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="/public/about.html" class="nav-link active"><i class="fas fa-info-circle"></i> About</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <!-- Hero -->
+        <div class="hero">
+            <div class="hero-icon">🤖</div>
+            <h2>About <span>ELYXIUM BOT</span></h2>
+            <p class="tagline">Premium WhatsApp Automation Platform — Built with ❤️</p>
+            <span class="version">v1.0</span>
+        </div>
+
+        <!-- What is ELYXIUM -->
+        <div class="card">
+            <h3><i class="fas fa-question-circle"></i> What is ELYXIUM BOT V1?</h3>
+            <p style="color:var(--text2); line-height:1.8;">
+                ELYXIUM BOT is a <strong style="color:var(--text);">Free WhatsApp automation platform</strong> 
+                that brings powerful features to your WhatsApp. From media downloads to group management, ELYXIUM does it all.
+                <br><br>
+                Built with cutting-edge <strong style="color:var(--accent);">Baileys v7</strong> technology, 
+                ELYXIUM offers a seamless web dashboard for pairing and management, 
+                plus a comprehensive tier system that scales with your needs.
+            </p>
+        </div>
+
+        <!-- Developer Info -->
+        <div class="card">
+            <h3><i class="fas fa-code"></i> Developer & Owner</h3>
+            <div class="dev-card">
+                <div class="dev-avatar">👑</div>
+                <div class="dev-info">
+                    <h3>ATHEX x ALTHEA</h3>
+                    <p class="role">Full-Stack Developer & Cyber Security Expert</p>
+                    <p>
+                        Passionate developers building the future of WhatsApp automation. 
+                        ELYXIUM BOT is crafted with precision, combining powerful backend 
+                        engineering with beautiful frontend design.
+                    </p>
+                    <p style="color:var(--text2); font-size:0.85rem;">
+                        📍 Pakistan &nbsp;|&nbsp; 💻 Node.js, Baileys, SQLite &nbsp;|&nbsp; 🎯
+                    </p>
+                    <div class="social-links">
+                        <a href="https://wa.me/923490916663" target="_blank" class="social-link whatsapp">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        <a href="https://whatsapp.com/channel/0029VbCc8Am5a24DMlIl4L02" target="_blank" class="social-link">
+                            <i class="fas fa-bullhorn"></i> Channel
+                        </a>
+                        <a href="mailto:teamathex82@gamil" class="social-link">
+                            <i class="fas fa-envelope"></i> Email
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+                <!-- Premium -->
+                <div class="tier-card premium">
+                    <div class="tier-icon">⭐</div>
+                    <div class="tier-name">ELYXIUM V2</div>
+                    <div class="tier-price">Rs. 999<span></span></div>
+                    <ul class="tier-features">
+                        <li><i class="fas fa-check"></i> <strong>40+</strong> Commands</li>
+                        <li><i class="fas fa-check"></i> Song/Video Download</li>
+                        <li><i class="fas fa-check"></i> TikTok, Insta, FB DL</li>
+                        <li><i class="fas fa-check"></i> APK Downloader</li>
+                        <li><i class="fas fa-check"></i> View-Once Saver</li>
+                        <li><i class="fas fa-check"></i> Sticker Maker</li>
+                        <li><i class="fas fa-check"></i> Auto-Reply System</li>
+                        <li><i class="fas fa-check"></i> Message Scheduler</li>
+                        <li><i class="fas fa-check"></i> Group Welcome/Goodbye</li>
+                        <li><i class="fas fa-check"></i> Poll Creator</li>
+                        <li><i class="fas fa-check"></i> Anti-Spam</li>
+                        <li><i class="fas fa-check"></i> Backup & Restore</li>
+                    </ul>
+                </div>
+
+                <!-- Yearly -->
+                <div class="tier-card">
+                    <div class="tier-icon">💎</div>
+                    <div class="tier-name">ELYXIUM V2</div>
+                    <div class="tier-price">Rs. 2000<span>/With Source Code</span></div>
+                    <ul class="tier-features">
+                        <li><i class="fas fa-check"></i> Everything</li>
+                        <li><i class="fas fa-check"></i> <strong>Get Both V1 & V2 Source Codes</strong></li>
+                        <li><i class="fas fa-check"></i> Priority Support</li>
+                        <li><i class="fas fa-check"></i> Early Features Access</li>
+                        <li><i class="fas fa-check"></i> Create Your Costum Bot</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="card">
+            <h3><i class="fas fa-microchip"></i> Tech Stack</h3>
+            <div class="tech-grid">
+                <span class="tech-badge"><i class="fab fa-node-js"></i> Node.js 20+</span>
+                <span class="tech-badge"><i class="fas fa-plug"></i> Baileys v7</span>
+                <span class="tech-badge"><i class="fas fa-database"></i> SQLite</span>
+                <span class="tech-badge"><i class="fas fa-server"></i> Express.js</span>
+                <span class="tech-badge"><i class="fas fa-bolt"></i> Socket.IO</span>
+                <span class="tech-badge"><i class="fas fa-brain"></i> Groq AI</span>
+                <span class="tech-badge"><i class="fas fa-film"></i> FFmpeg</span>
+                <span class="tech-badge"><i class="fas fa-shield-alt"></i> PM2</span>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="card">
+            <h3><i class="fas fa-chart-bar"></i> Bot Capabilities</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">68+</div>
+                    <div class="stat-label">Source Files</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">40+</div>
+                    <div class="stat-label">Commands</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">User Tiers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">Download Sources</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">∞</div>
+                    <div class="stat-label">Possibilities</div>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="text-align:center;">
+            <h3 style="justify-content:center;"><i class="fas fa-headset"></i> Get in Touch</h3>
+            <p style="color:var(--text2); margin-bottom:20px;">
+                Ready to upgrade? Have questions? We're here to help!
+            </p>
+            <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap;">
+                <a href="https://wa.me/923490916663" target="_blank" class="social-link whatsapp" style="font-size:1rem; padding:12px 25px;">
+                    <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                </a>
+                <a href="https://whatsapp.com/channel/0029VbCc8Am5a24DMlIl4L02" target="_blank" class="social-link" style="font-size:1rem; padding:12px 25px;">
+                    <i class="fas fa-bullhorn"></i> Join Channel
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>© 2026
+        <span>ELYXIUM BOT</span> — All Rights Reserved</p>
+        <p style="margin-top:5px;">Built with ❤️ by <span>ATHEX x ALTHEA</span></p>
+    </div>
+</body>
+</html>

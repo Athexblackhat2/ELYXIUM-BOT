@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — ELYXIUM BOT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0a0a0f; --bg2: #111118; --card: #16161f;
+            --border: #22223a; --accent: #a855f7; --accent2: #6366f1;
+            --gold: #f59e0b; --text: #e2e8f0; --text2: #94a3b8;
+            --green: #22c55e; --red: #ef4444; --orange: #f97316;
+            --gradient: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+            --glow: 0 0 30px rgba(168, 85, 247, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg); color: var(--text);
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.2;
+            animation: float 20s infinite ease-in-out;
+        }
+        .orb:nth-child(1) { width: 300px; height: 300px; background: var(--accent); top: -50px; left: -50px; }
+        .orb:nth-child(2) { width: 200px; height: 200px; background: var(--gold); bottom: -50px; right: -50px; animation-delay: -10s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, -50px) scale(1.2); }
+        }
+
+        /* Header */
+        .header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(10, 10, 15, 0.9); backdrop-filter: blur(20px);
+            border-bottom: 2px solid var(--accent); padding: 15px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-icon {
+            width: 45px; height: 45px; background: var(--gradient);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; box-shadow: var(--glow); animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(168, 85, 247, 0.8); }
+        }
+        .logo-text h1 { font-size: 1.3rem; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+        .logo-text span { font-size: 0.65rem; color: var(--text2); letter-spacing: 1px; text-transform: uppercase; }
+
+        .nav-links { display: flex; gap: 15px; align-items: center; }
+        .nav-link { color: var(--text2); text-decoration: none; padding: 8px 16px; border-radius: 8px; transition: all 0.3s; font-size: 0.9rem; }
+        .nav-link:hover, .nav-link.active { color: var(--text); background: var(--card); }
+        .nav-link i { margin-right: 6px; }
+
+        .container { max-width: 1300px; margin: 0 auto; padding: 25px 20px; position: relative; z-index: 1; }
+
+        /* Login Screen */
+        .login-screen {
+            display: flex; justify-content: center; align-items: center;
+            min-height: 80vh;
+        }
+        .login-card {
+            background: var(--card); border: 2px solid var(--accent);
+            border-radius: 20px; padding: 40px; text-align: center;
+            max-width: 400px; width: 100%; box-shadow: var(--glow);
+            animation: fadeInUp 0.5s;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .login-card .icon { font-size: 3rem; margin-bottom: 15px; }
+        .login-card h2 { margin-bottom: 10px; }
+        .login-card p { color: var(--text2); margin-bottom: 20px; font-size: 0.9rem; }
+        .login-card input {
+            width: 100%; padding: 14px 20px; border-radius: 12px;
+            border: 2px solid var(--border); background: var(--bg2);
+            color: var(--text); font-size: 1.1rem; text-align: center; letter-spacing: 5px;
+            transition: all 0.3s; margin-bottom: 15px;
+        }
+        .login-card input:focus { outline: none; border-color: var(--accent); box-shadow: var(--glow); }
+
+        .btn {
+            padding: 12px 28px; border-radius: 12px; border: none;
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+            transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-primary { background: var(--gradient); color: white; width: 100%; justify-content: center; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--glow); }
+        .btn-sm { padding: 8px 16px; font-size: 0.85rem; border-radius: 8px; }
+        .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); }
+        .btn-outline:hover { background: rgba(168,85,247,0.1); }
+        .btn-danger { background: var(--red); color: white; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-gold { background: var(--gold); color: #000; }
+        .btn-gold:hover { background: #e5a50a; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Dashboard */
+        .dashboard { display: none; }
+        .dashboard.active { display: block; animation: fadeInUp 0.4s; }
+
+        /* Stats Row */
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 20px; display: flex; align-items: center; gap: 15px;
+        }
+        .stat-icon {
+            width: 50px; height: 50px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+        }
+        .stat-icon.purple { background: rgba(168,85,247,0.2); color: var(--accent); }
+        .stat-icon.green { background: rgba(34,197,94,0.2); color: var(--green); }
+        .stat-icon.gold { background: rgba(245,158,11,0.2); color: var(--gold); }
+        .stat-icon.red { background: rgba(239,68,68,0.2); color: var(--red); }
+        .stat-info .value { font-size: 1.5rem; font-weight: 700; }
+        .stat-info .label { font-size: 0.8rem; color: var(--text2); }
+
+        /* Panel Card */
+        .panel-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 25px; margin-bottom: 20px;
+        }
+        .panel-card h3 { font-size: 1.2rem; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+        .panel-card h3 i { color: var(--accent); }
+
+        /* Tables */
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th {
+            text-align: left; padding: 12px 15px; font-size: 0.8rem;
+            text-transform: uppercase; letter-spacing: 1px; color: var(--text2);
+            border-bottom: 1px solid var(--border);
+        }
+        td {
+            padding: 12px 15px; border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+        tr:hover td { background: rgba(168,85,247,0.03); }
+
+        .badge-tier {
+            padding: 4px 12px; border-radius: 15px; font-size: 0.75rem; font-weight: 600;
+            display: inline-block;
+        }
+        .badge-tier.free { background: rgba(148,163,184,0.2); color: var(--text2); }
+        .badge-tier.premium { background: rgba(245,158,11,0.2); color: var(--gold); }
+
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+        .status-dot.online { background: var(--green); box-shadow: 0 0 8px var(--green); }
+        .status-dot.offline { background: var(--red); }
+
+        /* Add Premium Form */
+        .form-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-size: 0.8rem; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; }
+        .form-group input, .form-group select {
+            padding: 10px 15px; border-radius: 10px;
+            border: 1px solid var(--border); background: var(--bg2);
+            color: var(--text); font-size: 0.9rem;
+        }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--accent); }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab {
+            padding: 10px 20px; border-radius: 10px; border: 1px solid var(--border);
+            background: transparent; color: var(--text2); cursor: pointer;
+            font-size: 0.9rem; transition: all 0.3s;
+        }
+        .tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+        .tab:hover:not(.active) { border-color: var(--accent); color: var(--text); }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeInUp 0.3s; }
+
+        /* Toast */
+        .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 999; }
+        .toast {
+            background: var(--card); border: 1px solid var(--accent);
+            padding: 12px 20px; border-radius: 10px; margin-top: 8px;
+            animation: slideIn 0.3s; font-size: 0.9rem;
+        }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header { flex-direction: column; gap: 10px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .form-row { flex-direction: column; }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation">
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">👑</div>
+            <div class="logo-text">
+                <h1>Admin Panel</h1>
+                <span>ELYXIUM BOT — Owner Access</span>
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="/public/index.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="/public/about.html" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+            <a href="/public/admin.html" class="nav-link active"><i class="fas fa-crown"></i> Admin</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <!-- Login Screen -->
+        <div class="login-screen" id="loginScreen">
+            <div class="login-card">
+                <div class="icon">🔐</div>
+                <h2>Admin Access</h2>
+                <p>Enter your admin PIN to continue</p>
+                <input type="password" id="pinInput" placeholder="••••••" maxlength="6">
+                <button class="btn btn-primary" onclick="login()">
+                    <i class="fas fa-lock-open"></i> Unlock Panel
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard (hidden until login) -->
+        <div class="dashboard" id="dashboard">
+
+            <!-- Stats -->
+            <div class="stats-row" id="statsRow">
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fas fa-users"></i></div>
+                    <div class="stat-info"><div class="value" id="statTotalUsers">-</div><div class="label">Total Users</div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon gold"><i class="fas fa-crown"></i></div>
+                    <div class="stat-info"><div class="value" id="statPremiumUsers">-</div><div class="label">Premium Users</div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fas fa-bolt"></i></div>
+                    <div class="stat-info"><div class="value" id="statTodayCommands">-</div><div class="label">Today Commands</div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon red"><i class="fas fa-server"></i></div>
+                    <div class="stat-info"><div class="value" id="statActiveSessions">-</div><div class="label">Active Sessions</div></div>
+                </div>
+            </div>
+
+            <!-- Add Premium User -->
+            <div class="panel-card">
+                <h3><i class="fas fa-plus-circle"></i> Add Premium User</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>WhatsApp Number</label>
+                        <input type="text" id="premiumNumber" placeholder="923000000000">
+                    </div>
+                    <div class="form-group">
+                        <label>Plan</label>
+                        <select id="premiumPlan">
+                            <option value="monthly">Monthly — Rs. 200</option>
+                            <option value="yearly">Yearly — Rs. 2000</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-gold btn-sm" onclick="addPremium()">
+                        <i class="fas fa-star"></i> Activate Premium
+                    </button>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="panel-card">
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('all')">All Users</button>
+                    <button class="tab" onclick="switchTab('premium')">Premium</button>
+                    <button class="tab" onclick="switchTab('free')">Free</button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Number</th>
+                                <th>Tier</th>
+                                <th>Premium Expiry</th>
+                                <th>Total Cmds</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr><td colspan="6" style="text-align:center; color:var(--text2);">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sessions -->
+            <div class="panel-card">
+                <h3><i class="fas fa-plug"></i> Active Sessions</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>Number</th><th>Status</th><th>Connected At</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="sessionsTableBody">
+                            <tr><td colspan="4" style="text-align:center; color:var(--text2);">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="panel-card">
+                <h3><i class="fas fa-tools"></i> Quick Actions</h3>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button class="btn btn-outline btn-sm" onclick="refreshAll()"><i class="fas fa-sync-alt"></i> Refresh All</button>
+                    <button class="btn btn-danger btn-sm" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        let adminToken = null;
+        let currentTab = 'all';
+        let allUsers = [];
+
+        // Login
+        function login() {
+            const pin = document.getElementById('pinInput').value;
+            if (!pin) return toast('Please enter PIN', 'error');
+
+            fetch('/api/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pin })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    adminToken = data.token;
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('dashboard').classList.add('active');
+                    refreshAll();
+                    toast('Welcome, Admin! 👑', 'success');
+                } else {
+                    toast('Invalid PIN!', 'error');
+                }
+            })
+            .catch(() => toast('Login failed', 'error'));
+        }
+
+        document.getElementById('pinInput').addEventListener('keypress', e => {
+            if (e.key === 'Enter') login();
+        });
+
+        // API calls
+        async function apiCall(url, method = 'GET', body = null) {
+            const opts = {
+                method,
+                headers: { 'Content-Type': 'application/json' }
+            };
+            if (adminToken) opts.headers['Authorization'] = `Bearer ${adminToken}`;
+            if (body) opts.body = JSON.stringify(body);
+
+            const res = await fetch(url, opts);
+            if (res.status === 401) { document.getElementById('loginScreen').style.display = 'flex'; document.getElementById('dashboard').classList.remove('active'); throw new Error('Unauthorized'); }
+            return res.json();
+        }
+
+        function refreshAll() {
+            loadStats();
+            loadUsers();
+            loadSessions();
+        }
+
+        async function loadStats() {
+            try {
+                const data = await apiCall('/api/admin/stats');
+                document.getElementById('statTotalUsers').textContent = data.totalUsers || 0;
+                document.getElementById('statPremiumUsers').textContent = data.premiumUsers || 0;
+                document.getElementById('statTodayCommands').textContent = data.todayCommands || 0;
+                document.getElementById('statActiveSessions').textContent = data.activeSessions || 0;
+            } catch (e) { /* silent */ }
+        }
+
+        async function loadUsers() {
+            try {
+                const data = await apiCall('/api/admin/users?tier=' + (currentTab === 'all' ? '' : currentTab));
+                allUsers = data.users || [];
+                renderUsers(allUsers);
+            } catch (e) {
+                document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--red);">Failed to load users</td></tr>';
+            }
+        }
+
+        function renderUsers(users) {
+            const tbody = document.getElementById('usersTableBody');
+            if (!users.length) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text2);">No users found</td></tr>';
+                return;
+            }
+            tbody.innerHTML = users.map(u => `
+                <tr>
+                    <td>+${u.number}</td>
+                    <td><span class="badge-tier ${u.tier}">${u.tier === 'premium' ? '⭐ Premium' : 'Free'}</span></td>
+                    <td>${u.premium_expiry ? new Date(u.premium_expiry).toLocaleDateString() : '-'}</td>
+                    <td>${u.total_commands || 0}</td>
+                    <td>${u.created_at ? new Date(u.created_at).toLocaleDateString() : '-'}</td>
+                    <td>
+                        ${u.tier === 'premium' ? `<button class="btn btn-danger btn-sm" onclick="revokePremium('${u.number}')"><i class="fas fa-times"></i> Revoke</button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadSessions() {
+            try {
+                const data = await apiCall('/api/admin/sessions');
+                const sessions = data.sessions || [];
+                const tbody = document.getElementById('sessionsTableBody');
+                if (!sessions.length) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text2);">No active sessions</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = sessions.map(s => `
+                    <tr>
+                        <td>+${s.user_number}</td>
+                        <td><span class="status-dot online"></span> Connected</td>
+                        <td>${s.connected_at ? new Date(s.connected_at).toLocaleString() : '-'}</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="forceDisconnect('${s.user_number}')"><i class="fas fa-power-off"></i> Disconnect</button></td>
+                    </tr>
+                `).join('');
+            } catch (e) {
+                document.getElementById('sessionsTableBody').innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--red);">Failed to load</td></tr>';
+            }
+        }
+
+        async function addPremium() {
+            const number = document.getElementById('premiumNumber').value.trim();
+            const plan = document.getElementById('premiumPlan').value;
+
+            if (!number || !/^\d{10,15}$/.test(number)) return toast('Enter valid number', 'error');
+
+            try {
+                const data = await apiCall('/api/admin/add-premium', 'POST', { number, plan });
+                if (data.success) {
+                    toast(`Premium activated for +${number}!`, 'success');
+                    document.getElementById('premiumNumber').value = '';
+                    refreshAll();
+                } else {
+                    toast(data.message || 'Failed', 'error');
+                }
+            } catch (e) {
+                toast('Failed to add premium', 'error');
+            }
+        }
+
+        async function revokePremium(number) {
+            if (!confirm(`Revoke premium from +${number}?`)) return;
+            try {
+                await apiCall('/api/admin/revoke-premium', 'POST', { number });
+                toast(`Premium revoked from +${number}`, 'success');
+                refreshAll();
+            } catch (e) {
+                toast('Failed to revoke', 'error');
+            }
+        }
+
+        async function forceDisconnect(number) {
+            if (!confirm(`Force disconnect +${number}?`)) return;
+            try {
+                await apiCall('/api/admin/force-disconnect', 'POST', { number });
+                toast(`Disconnected +${number}`, 'success');
+                loadSessions();
+            } catch (e) {
+                toast('Failed to disconnect', 'error');
+            }
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.tab:nth-child(${tab === 'all' ? 1 : tab === 'premium' ? 2 : 3})`).classList.add('active');
+            loadUsers();
+        }
+
+        function confirmLogout() {
+            if (confirm('Leave admin panel?')) {
+                adminToken = null;
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('dashboard').classList.remove('active');
+                document.getElementById('pinInput').value = '';
+            }
+        }
+
+        function toast(msg, type = 'info') {
+            const el = document.createElement('div');
+            el.className = 'toast';
+            el.style.borderColor = type === 'error' ? 'var(--red)' : type === 'success' ? 'var(--green)' : 'var(--accent)';
+            el.textContent = msg;
+            document.getElementById('toastContainer').appendChild(el);
+            setTimeout(() => el.remove(), 3500);
+        }
+    </script>
+</body>
+</html>
