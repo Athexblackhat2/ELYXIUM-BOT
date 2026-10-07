@@ -176,3 +176,9 @@ Dev: `nodemon`. Process management: PM2 (`ecosystem.config.js`), not a listed np
 ## 8. Summary
 
 ELYXIUM BOT is a feature-rich, actively evolving, self-hosted WhatsApp automation platform with a clean V2/V3 rewrite over a rougher V1 prototype. The engineering (session management, SQLite schema, admin API, command router with tiered permissions) is competent and the bulk of the 60+ commands are ordinary bot fare (menus, games, downloaders, group management, reminders, AI chat). Alongside that, a small number of features — the SIM/CNIC lookup, silent view-once capture, and anti-delete forwarding — are privacy-invasive by design and the V1 spam/crash tools were outright abuse utilities; these are the parts most worth re-evaluating before further use or distribution.
+
+## 9. About
+- ELYXIUM V1 is Free & Open Source For Everyone.
+- ELYXIUM V2 Is Aavailbe Only For Pairing and Source code is Paid.
+- ELYXIUM V3 Is Fully Paid Source Code + Everything Also With Bug V3 is Not MD Bot V3 Is BUG BOT.
+- contact for Source Code: +92 3490916663
