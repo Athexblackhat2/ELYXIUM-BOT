@@ -1,0 +1,32 @@
+[
+  {
+    "userId": "923490916663@s.whatsapp.net",
+    "ownerName": "ATHEX BLACK HAT",
+    "linkedAt": "2026-06-19T05:44:00.993Z",
+    "features": {
+      "antiCall": true,
+      "autoReact": true,
+      "reactEmoji": "⚡",
+      "fakeStatus": "online"
+    },
+    "stats": {
+      "commandsUsed": 0,
+      "spamSent": 0
+    }
+  },
+  {
+    "userId": "201662270570585@lid",
+    "ownerName": "User",
+    "linkedAt": "2026-06-19T05:44:50.892Z",
+    "features": {
+      "antiCall": true,
+      "autoReact": true,
+      "reactEmoji": "⚡",
+      "fakeStatus": "fakeonline"
+    },
+    "stats": {
+      "commandsUsed": 0,
+      "spamSent": 0
+    }
+  }
+]
