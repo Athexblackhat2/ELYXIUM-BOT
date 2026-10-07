@@ -1,0 +1,29 @@
+{
+  "bot": {
+    "name": "ELYXIUM",
+    "version": "1.0.0",
+    "prefix": "!",
+    "developer": "ATHEX & ALTHEA",
+    "tagline": "Powered by ATHEX & ALTHEA"
+  },
+  
+  "features": {
+    "autoSeen": true,
+    "autoReact": true,
+    "antiCall": {
+      "enabled": true,
+      "replyMessage": "DON'T TRY... IT'S NOT NORMAL!\nTHIS IS THE POWER OF ⚡ ATHEX & ALTHEA ⚡"
+    },
+    "ownerProtection": {
+      "enabled": true,
+      "warningMessage": "\n    ⚠️  ACCESS DENIED  ⚠️   \n  \n   DON'T TRY... \n   IT'S NOT NORMAL!   \n  \n   THIS IS THE POWER OF   \n   ⚡ ATHEX & ALTHEA \n \n"
+    }
+  },
+  
+  "defaults": {
+    "autoReactEmoji": "⚡",
+    "fakeStatus": "online",
+    "spamDelay": 2000,
+    "spamCount": 10
+  }
+}
